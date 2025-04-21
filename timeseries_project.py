@@ -19,7 +19,7 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, LSTM, BatchNormalization, Dropout, GRU
 from tensorflow.keras.optimizers import Adam
 from statsmodels.tsa.stattools import adfuller
-from statsmodels.tsa.statespace.sarimax import SARIMAX
+from statsmodels.tsa.arima.model import ARIMA
 
 # %%
 data = yf.download('ISAT.JK', start='2018-06-01', end='2025-04-01')
@@ -256,7 +256,7 @@ stock_data.describe().round(1)
 stock_data.set_index('Date', inplace=True)
 
 # %% [markdown]
-# ##### Data Preparation untuk pemodelan dengan menggunakan SARIMA
+# ##### Data Preparation untuk pemodelan dengan menggunakan ARIMA
 
 # %%
 def check_stationarity(series, name=''):
@@ -268,13 +268,13 @@ for col in cols:
     check_stationarity(stock_data[col], name=col)
 
 # %% [markdown]
-# Hasil dengan ADF test menyatakan bahwa semua kolom data perlu didifferencing karena nilai p-value > 0.05. Ini dilakukan untuk menjadikan data stasioner (karakteristik statistik tidak berubah sepanjang waktu) agar bisa pemodelan dengan pendekatan time-series (ARIMA & SARIMA)
+# Hasil dengan ADF test menyatakan bahwa semua kolom data perlu didifferencing karena nilai p-value > 0.05. Ini dilakukan untuk menjadikan data stasioner (karakteristik statistik tidak berubah sepanjang waktu) agar bisa pemodelan dengan pendekatan time-series (ARIMA)
 
 # %%
 diff_data = stock_data.diff().dropna()
 
 # %% [markdown]
-# Splliting data untuk pemodelan dengan SARIMA
+# Splliting data untuk pemodelan dengan ARIMA
 
 # %%
 split_index = int(len(diff_data) * 0.7)
@@ -322,15 +322,15 @@ valid_set = windowed_dataset(series=valid_price, window_size=WINDOW_SIZE, batch_
 # ## Modelling Process
 
 # %% [markdown]
-# Dalam pemodelan ini saya membandingkan 3 jenis model, yaitu SARIMA, LSTM, dan GRU
+# Dalam pemodelan ini saya membandingkan 3 jenis model, yaitu ARIMA, LSTM, dan GRU
 
 # %% [markdown]
-# #### SARIMA
+# #### ARIMA
 
 # %%
-model = SARIMAX(train['Close'], order=(1,1,1), seasonal_order=(1,1,1,24))
+model = ARIMA(train['Close'], order=(1,1,2))
 result = model.fit()
-print('Fitted SARIMAX model for Close Prices')
+print('Fitted ARIMA model for Close Prices')
 print(result.summary())
 
 # %%
@@ -399,7 +399,7 @@ hist_gru = model_gru.fit(train_set, validation_data=valid_set, epochs=50, callba
 # ## Evaluation
 
 # %% [markdown]
-# ##### Evaluasi pada hasil Model SARIMA
+# ##### Evaluasi pada hasil Model ARIMA
 
 # %%
 mse = mean_squared_error(valid['Close'], forecast_mean)
@@ -420,12 +420,12 @@ plt.tight_layout()
 plt.show()
 
 # %% [markdown]
-# Pemaparan terkait Evaluasi Metrik dari hasil pemodelan dengan SARIMA
+# Pemaparan terkait Evaluasi Metrik dari hasil pemodelan dengan ARIMA
 
 # %% [markdown]
-# - MAE (Mean Absolute Error) sebesar 0.0536 menunjukkan bahwa secara rata-rata, prediksi meleset sekitar 0.0536 unit dari nilai aktual.
-# - MSE (Mean Squared Error) sebesar 0.0054 relatif kecil, namun ini disebabkan oleh prediksi yang konsisten di sekitar nilai rata-rata, bukan karena model berhasil menangkap pola volatilitas.
-# - Model SARIMA ini cenderung memprediksi nilai mendekati rata-rata (mean reverting) dan tidak menangkap volatilitas harga saham.
+# - MAE (Mean Absolute Error) sebesar 0.0527 menunjukkan bahwa secara rata-rata, prediksi meleset sekitar 0.0536 unit dari nilai aktual.
+# - MSE (Mean Squared Error) sebesar 0.0053 relatif kecil, namun ini disebabkan oleh prediksi yang konsisten di sekitar nilai rata-rata, bukan karena model berhasil menangkap pola volatilitas.
+# - Model ARIMA ini cenderung memprediksi nilai mendekati rata-rata (mean reverting) dan tidak menangkap volatilitas harga saham.
 
 # %% [markdown]
 # ##### Evaluasi pada Model LSTM
@@ -521,7 +521,7 @@ plot_forecasting(model_lstm, "LSTM")
 
 # %% [markdown]
 # - MAE sebesar 0.5035 menunjukkan rata-rata kesalahan prediksi cukup signifikan.
-# - MSE sebesar 0.3469 lebih tinggi dari model SARIMA sebelumnya (karena penggunaan data untuk SARIMA melewati proses difference), mengindikasikan bahwa meskipun LSTM berusaha menangkap volatilitas, akurasi prediksinya masih kurang memuaskan.
+# - MSE sebesar 0.3469 lebih tinggi dari model ARIMA sebelumnya (karena penggunaan data untuk ARIMA melewati proses difference), mengindikasikan bahwa meskipun LSTM berusaha menangkap volatilitas, akurasi prediksinya masih kurang memuaskan.
 # - Model LSTM mampu untuk menangkap beberapa pola penurunan tajam pada data (downspikes), tetapi gagal memprediksi dengan tepat pola kenaikan yang dominan pada data aktual.
 
 # %% [markdown]
@@ -548,8 +548,6 @@ plot_forecasting(model_gru, "GRU")
 # #### Kesimpulan Akhir dari Hasil Pemodelan
 
 # %% [markdown]
-# - Hasil pemodelan yang terbaik dari 3 metode yang dicoba (SARIMA, LSTM, dan GRU) diperoleh dengan menggunakan model GRU.
-# - Hasil forecasting menggunakan SARIMA kurang bisa menangkap volatilitas pada data dengan baik
+# - Hasil pemodelan yang terbaik dari 3 metode yang dicoba (ARIMA, LSTM, dan GRU) diperoleh dengan menggunakan model GRU.
+# - Hasil forecasting menggunakan ARIMA kurang bisa menangkap volatilitas pada data dengan baik
 # - Hasil forecasting dengan LSTM & GRU agak sedikit mampu menangkap pola penurunan tajam pada data, namun gagal memprediksi dengan tepat pola kenaikan dominan 
-
-
