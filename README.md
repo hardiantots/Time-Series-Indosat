@@ -72,11 +72,15 @@ Terdapat dua jenis pengukuran evaluasi metrik yang digunakan, yaitu:
 
 Formula untuk MAE yaitu:  
 ![MAE](https://raw.githubusercontent.com/hardiantots/Time-Series-Indosat/main/assets_readme/mae.png)
+- \( y_t \): nilai aktual pada waktu ke-`t`
+- \( \hat{y}_t \): nilai prediksi pada waktu ke-`t`
+- \( n \): jumlah total data
 
 <br>
 
 Formula untuk MSE yaitu:  
 ![MSE](https://raw.githubusercontent.com/hardiantots/Time-Series-Indosat/main/assets_readme/mse.png)
+- Sama seperti MAE, namun setiap selisih dikuadratkan, sehingga penalti untuk kesalahan besar menjadi lebih besar.
 
 Evaluasi metrik pada ketiga model dilakukan setelah proses pelatihan dilakukan. Penjelasan terkait hasil pengujian dengan model ARIMA adalah sebagai berikut:
   - MAE (Mean Absolute Error) sebesar 0.0536 menunjukkan bahwa secara rata-rata, prediksi meleset sekitar 0.0536 unit dari nilai aktual.
