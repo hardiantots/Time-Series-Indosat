@@ -83,16 +83,19 @@ Formula untuk MSE yaitu:
 - Sama seperti MAE, namun setiap selisih dikuadratkan, sehingga penalti untuk kesalahan besar menjadi lebih besar.
 
 Evaluasi metrik pada ketiga model dilakukan setelah proses pelatihan dilakukan. Penjelasan terkait hasil pengujian dengan model ARIMA adalah sebagai berikut:
+![ARIMAResult](https://raw.githubusercontent.com/hardiantots/Time-Series-Indosat/main/assets_readme/outputARIMA.png)
   - MAE (Mean Absolute Error) sebesar 0.0536 menunjukkan bahwa secara rata-rata, prediksi meleset sekitar 0.0536 unit dari nilai aktual.
   - MSE (Mean Squared Error) sebesar 0.0054 relatif kecil, namun ini disebabkan oleh prediksi yang konsisten di sekitar nilai rata-rata, bukan karena model berhasil menangkap pola volatilitas.
   - Model ARIMA ini cenderung memprediksi nilai mendekati rata-rata (mean reverting) dan tidak menangkap volatilitas harga saham.
 
 Penjelasan terkait hasil pengujian dengan model LSTM yaitu:
+![ARIMAResult](https://raw.githubusercontent.com/hardiantots/Time-Series-Indosat/main/assets_readme/outputLSTM.png)
   - MAE sebesar 0.5035 menunjukkan rata-rata kesalahan prediksi cukup signifikan.
   - MSE sebesar 0.3469 lebih tinggi dari model ARIMA sebelumnya (karena penggunaan data untuk ARIMA melewati proses difference), mengindikasikan bahwa meskipun LSTM berusaha menangkap volatilitas, akurasi prediksinya masih kurang memuaskan.
   - Model LSTM mampu untuk menangkap beberapa pola penurunan tajam pada data (downspikes), tetapi gagal memprediksi dengan tepat pola kenaikan yang dominan pada data aktual.
 
 Penjelasan terkait hasil pengujian dengan model GRU yaitu:
+![ARIMAResult](https://raw.githubusercontent.com/hardiantots/Time-Series-Indosat/main/assets_readme/outputGRU.png)
   - MAE sebesar 0.4531 menunjukkan rata-rata kesalahan prediksi masih cukup signifikan, namun hasilnya lebih baik dari LSTM.
   - MSE sebesar 0.2909 lebih tinggi dari model LSTM, namun tetap akurasi prediksinya masih kurang memuaskan.
   - Model GRU mampu untuk menangkap beberapa pola penurunan tajam pada data (downspikes), tetapi gagal memprediksi dengan tepat pola kenaikan yang dominan pada data aktual.
