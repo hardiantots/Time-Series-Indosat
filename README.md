@@ -70,10 +70,13 @@ Terdapat dua jenis pengukuran evaluasi metrik yang digunakan, yaitu:
   - MAE (Mean Absolute Error) : Metrik untuk mengukur rata-rata absolut selisih antara nilai hasil prediksi dan nilai aktual pada data. Metrik ini lebih cocok digunakan ketika kita ingin mengukur kesalahan prediksi secara langsung dan linier, tanpa terlalu memprioritaskan kesalahan besar (misalnya, fluktuasi harga saham yang tidak terlalu jauh dari nilai sebenarnya).
   - MSE (Mean Squared Error) : Metrik untuk mengukur rata-rata kuadrat selisih antara nilai yang diprediksi dan nilai aktual. Dalam prediksi harga saham, terutama ketika harga dapat bergerak cukup fluktuatif, MSE dapat memberikan penalti lebih berat pada kesalahan besar, yang membantu model menjadi lebih sensitif terhadap perubahan harga signifikan. Hal ini akan mengurangi risiko model memprediksi harga saham dengan kesalahan besar yang tidak terdeteksi.
 
-Formula untuk MAE yaitu:
-![image](https://raw.githubusercontent.com/hardiantots/Time-Series-Indosat/main/assets_readme/mae.png)
-Formula untuk MSE yaitu:
-![image](https://raw.githubusercontent.com/hardiantots/Time-Series-Indosat/main/assets_readme/mse.png)
+Formula untuk MAE yaitu:  
+![MAE](https://raw.githubusercontent.com/hardiantots/Time-Series-Indosat/main/assets_readme/mae.png)
+
+<br>
+
+Formula untuk MSE yaitu:  
+![MSE](https://raw.githubusercontent.com/hardiantots/Time-Series-Indosat/main/assets_readme/mse.png)
 
 Evaluasi metrik pada ketiga model dilakukan setelah proses pelatihan dilakukan. Penjelasan terkait hasil pengujian dengan model ARIMA adalah sebagai berikut:
   - MAE (Mean Absolute Error) sebesar 0.0536 menunjukkan bahwa secara rata-rata, prediksi meleset sekitar 0.0536 unit dari nilai aktual.
